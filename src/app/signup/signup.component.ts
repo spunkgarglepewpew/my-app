@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-
 
 @Component({
   selector: 'app-signup',
@@ -17,48 +17,31 @@ export class SignupComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onRegister() {
-    console.log('Registering with:', {
+    const user = {
       username: this.username,
       password: this.password,
       email: this.email,
       mobile: this.mobile,
       address: this.address,
       gender: this.gender
-      
-    });
+      //role: ['user']
+    };
+    console.log('Registering user:', user);
 
- 
-    this.authService.signup({
-      username: this.username,
-      password: this.password,
-      email: this.email,
-      mobile: this.mobile,
-      address: this.address,
-      gender: this.gender,
-      role: ['user']
-    })
-    .then(response => {
-      console.log('Registration successful:', response);
-      this.successMessage = 'Registration successful! You can now login.';
-      this.errorMessage = '';  
-    })
-    .catch(error => {
-      console.error('Registration failed:', error);
-      if (error.response && error.response.data) {
-        if (error.response.data.message === 'Error: Username is already taken!') {
-          this.errorMessage = 'Username is already taken. Please choose another one.';
-        } else if (error.response.data.message === 'Error: Email is already in use!') {
-          this.errorMessage = 'Email is already in use. Please choose another one.';
-        } else {
-          this.errorMessage = 'An error occurred. Please try again later.';  
-        }
-      } else {
-        this.errorMessage = 'An error occurred. Please try again later.';
-      }
-      this.successMessage = '';  
-    });
-}
+    this.authService.register(user)
+      .then(response => {
+        this.successMessage = 'Sign up successful!';
+        this.errorMessage = '';
+        setTimeout(() => {
+        this.router.navigate(['/home']);
+        }, 2000);
+      })
+      .catch(error => {
+        this.errorMessage = 'Sign up failed. Please try again.';
+        this.successMessage = '';
+      });
+  }
 }

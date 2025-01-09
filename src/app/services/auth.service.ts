@@ -25,8 +25,19 @@ export class AuthService {
 
   constructor() { }
 
+  register(user: any) {
+    return axios.post(`${this.apiUrl}/signup`, user)
+      .then(response => {
+        console.log('Sign up Successful:', response.data);
+        return response.data;
+      })
+      .catch(error => {
+        console.error('Sign up Error:', error);
+        throw error;
+      });
+  }
 
-  login(credentials: SigninRequest) {
+  login(credentials: any) {
     return axios.post(`${this.apiUrl}/signin`, credentials)
       .then(response => {
        console.log('Login Successful:', response.data);
@@ -34,19 +45,6 @@ export class AuthService {
       })
       .catch(error => {
         console.error('Login Error:', error);
-        throw error;
-      });
-  }
-
-  
-  signup(user: SignupRequest) {
-    return axios.post(`${this.apiUrl}/signup`, user)
-      .then(response => {
-        console.log('Signup Successful:', response.data);
-        return response.data;
-      })
-      .catch(error => {
-        console.error('Signup Error:', error);
         throw error;
       });
   }
