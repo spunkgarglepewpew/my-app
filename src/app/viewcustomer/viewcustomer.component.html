@@ -1,0 +1,17 @@
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  
+  <h3>Customer Details</h3>
+  
+  <div *ngIf="customer">
+    <p><strong>Customer ID:</strong> {{ customer.customerId }}</p>
+    <p><strong>First Name:</strong> {{ customer.firstName }}</p>
+    <p><strong>Last Name:</strong> {{ customer.lastName }}</p>
+    <p><strong>Email:</strong> {{ customer.email }}</p>
+  </div>
+  
+  <div *ngIf="!customer">
+    <p>Loading customer details...</p>
+  </div>
+  

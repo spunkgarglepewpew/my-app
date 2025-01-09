@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
@@ -14,25 +13,40 @@ export class SigninComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private authService: AuthService,private router:Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onLogin() {
     console.log('Logging in with:', this.username, this.password);
 
-    
-     this.authService.login({ username: this.username, password: this.password })
-     .then(response => {
-       console.log('Login successful:', response);
-       this.errorMessage = ''; 
-       this.successMessage = 'Login successful! Welcome back!'; 
-       localStorage.setItem("accessToken",response.accessToken);
-     })
-     .catch(error => {
-       console.error('Login failed:', error);
-       this.errorMessage = 'Invalid username or password. Please try again.'; 
-       this.successMessage = ''; 
-     });
-    
-     this.router.navigate(["/greet"]);
-}
+    this.authService.login({ username: this.username, password: this.password })
+      .then(response => {
+        console.log('Login successful:', response);
+        this.errorMessage = ''; 
+        this.successMessage = 'Login successful! Welcome back!'; 
+
+        localStorage.setItem("accessToken", response.accessToken);
+
+        const userRole = response.roles.find((role: string) => role === 'ROLE_USER');
+        const adminRole = response.roles.find((role: string) => role === 'ROLE_ADMIN');
+
+  
+        if (adminRole) {
+          localStorage.setItem('isAdmin', 'true'); 
+        } else {
+          localStorage.setItem('isAdmin', 'false'); 
+        }
+
+
+        if (userRole || adminRole) {
+          this.router.navigate(['/customer']);
+        } else {
+          this.router.navigate(['/home']);
+        }
+      })
+      .catch(error => {
+        console.error('Login failed:', error);
+        this.errorMessage = 'Invalid username or password. Please try again.'; 
+        this.successMessage = ''; 
+      });
+  }
 }

@@ -1,0 +1,64 @@
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  
+  <h3>Customer List</h3>
+  
+  
+  <table *ngIf="customers.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.customerId }}</td>
+        <td>{{ customer.firstName }}</td>
+        <td>{{ customer.lastName }}</td>
+        <td>{{ customer.email }}</td>
+        <td>
+          <button (click)="viewCustomer(customer.customerId)" class="btn btn-info btn-sm">
+            View
+          </button>
+  
+        
+          <span *ngIf="isAdmin">
+            <button (click)="editCustomer(customer.customerId)" class="btn btn-warning btn-sm">
+              Edit
+            </button>
+            <button (click)="deleteCustomer(customer.customerId)" class="btn btn-danger btn-sm">
+              Delete
+            </button>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+ 
+  <div *ngIf="customers.length === 0">
+    No customers available.
+  </div>
+  
+ 
+  <div *ngIf="isAdmin">
+    <button (click)="addCustomer()" class="btn btn-primary">
+      Add New Customer
+    </button>
+  </div>
+
+  <div *ngIf="isLoggedIn">
+    <button (click)="logout()" class="btn btn-danger">
+      Logout
+    </button>
+  </div>
+  
