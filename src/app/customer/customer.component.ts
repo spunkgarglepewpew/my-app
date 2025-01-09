@@ -45,8 +45,10 @@ export class CustomerComponent implements OnInit {
   async loadCustomers() {
     const token = localStorage.getItem('accessToken');
     if (token) {
+      console.log(token);
       try {
         this.customers = await this.customerService.getCustomers(token); 
+        console.log(this.customers);
         this.successMessage = 'Customer data loaded successfully!';
       } catch (error) {
         this.errorMessage = 'Failed to load customers.';
