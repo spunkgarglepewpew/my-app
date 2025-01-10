@@ -25,24 +25,12 @@ export class SigninComponent {
         this.successMessage = 'Login successful! Welcome back!'; 
 
         localStorage.setItem("accessToken", response.accessToken);
-        localStorage.setItem("roles", response.roles);
-        /**const userRole = response.roles.find((role: string) => role === 'ROLE_USER');
-        const adminRole = response.roles.find((role: string) => role === 'ROLE_ADMIN');
+        localStorage.setItem("roles", JSON.stringify(response.roles));
 
-  
-        if (adminRole) {
-          localStorage.setItem('isAdmin', 'true'); 
-        } else {
-          localStorage.setItem('isAdmin', 'false'); 
-        }
+        const isAdmin = response.roles.includes('ROLE_ADMIN');
+        localStorage.setItem('isAdmin', isAdmin.toString());
 
-
-        if (userRole || adminRole) {
-          this.router.navigate(['/customer']);
-        } else {
-          this.router.navigate(['/home']);
-        }**/
-          this.router.navigate(['/customer']);
+        this.router.navigate(['/customer']);
       })
       .catch(error => {
         console.error('Login failed:', error);
